@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+  nginx: 
+    ports:
+      - 80:80
+  node_app:
+    build:
+      args: 
+        - NODE_ENV:prod
+    deploy:
+      replicas: 4
+      update_config:
+        parallelism: 2
+        failure_action: rollback
+        delay: 10s
+      restart_policy:
+        condition: any
+    environment:
+      - NODE_ENV=prod
+    command: npm run start
